@@ -1,0 +1,15 @@
+.add-topic-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-topic-cancel-nav {
+  text-align: end;
+  cursor: pointer;
+}
+
+.add-topic-title {
+  display: block;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,94 @@
+.input-field-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-label {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin-left: 20px;
+}
+
+.input-field {
+  width: 100%;
+  height: 50px;
+  border-radius: 15px;
+  border-top: 1px solid var(--text-primary);
+  border-right: 1px solid var(--text-primary);
+  border-left: 1px solid var(--text-primary);
+  border-bottom: 3px solid var(--text-primary);
+  box-sizing: border-box;
+  padding-left: 20px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-field::placeholder {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-field.valid {
+  animation: outlineAnimation 0.5s forwards;
+  color: var(--green-primary);
+}
+
+.valid-icon {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  font-size: 1.2em;
+  color: var(--green-primary);
+  opacity: 0;
+  animation: tickAppear 0.3s 0.5s forwards;
+}
+
+@keyframes outlineAnimation {
+  0% {
+    border-color: var(--text-primary);
+  }
+  100% {
+    border-color: var(--green-primary);
+  }
+}
+
+@keyframes tickAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.input-field.error {
+  border-color: var(--red-primary);
+}
+
+.error-message {
+  color: var(--red-primary);
+} 
+
+.error-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  gap: 5px;
+}
+
+.emoji-icon {
+  width: 25px;
+  height: 25px;
+}
+
+
