@@ -1,10 +1,8 @@
 import React from 'react';
 import './ProgressScreen.css';
-import HeaderNav from '../HeaderNav/HeaderNav';
 import RepeatIcon from '../../assets/repeat.svg';
 
 const ProgressScreen = ({
-    onBack,
     onStartAgain,
     onRetryUnlearnedWords,
     onFinish,
@@ -16,7 +14,6 @@ const ProgressScreen = ({
 
     return (
         <div className="progress-screen fade-in">
-            <HeaderNav title="Cancel" onClick={onBack} />
             <div className='progress-info'>
                 <span>{topicTitle}</span>
                 <div className="dot"></div>

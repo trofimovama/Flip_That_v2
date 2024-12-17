@@ -43,9 +43,9 @@ const InitialScreen = () => {
     const handleRetryUnlearnedWords = () => {
         const topicCards = flashcards.find((f) => f.topic === currentTopic)?.cards || [];
         const unlearnedWords = topicCards.filter(
-            (card) => progressData.notKnownCards?.includes(card.id) // Match unlearned card IDs
+            (card) => progressData.notKnownCards?.includes(card.id)
         );
-        setSelectedFlashcards(unlearnedWords); // Use state setter directly
+        setSelectedFlashcards(unlearnedWords);
         setCurrentScreen("game");
     }; 
 
@@ -133,15 +133,35 @@ const InitialScreen = () => {
         if (!formData.word.trim()) errors.word = 'Let’s add word';
         if (!formData.meaning.trim()) errors.meaning = 'Let’s add meaning';
         if (!formData.topic.trim()) errors.topic = 'Let’s add name of the topic';
-
+    
         setValidationErrors(errors);
-
+    
         if (Object.keys(errors).length === 0) {
-            setFlashcards((prevFlashcards) => [
-                ...prevFlashcards,
-                { word: formData.word, meaning: formData.meaning, topic: formData.topic },
-            ]);
-
+            setFlashcards((prevFlashcards) => {
+                const topicIndex = prevFlashcards.findIndex(
+                    (topic) => topic.topic === formData.topic
+                );
+    
+                if (topicIndex !== -1) {
+                    const updatedFlashcards = [...prevFlashcards];
+                    updatedFlashcards[topicIndex].cards = [
+                        ...(updatedFlashcards[topicIndex].cards || []),
+                        { word: formData.word, meaning: formData.meaning, id: Date.now() },
+                    ];
+                    return updatedFlashcards;
+                } else {
+                    return [
+                        ...prevFlashcards,
+                        {
+                            topic: formData.topic,
+                            cards: [
+                                { word: formData.word, meaning: formData.meaning, id: Date.now() },
+                            ],
+                        },
+                    ];
+                }
+            });
+    
             setCurrentTopic(formData.topic);
             setCurrentScreen("flashcards");
             setFormData({ word: '', meaning: '', topic: '' });

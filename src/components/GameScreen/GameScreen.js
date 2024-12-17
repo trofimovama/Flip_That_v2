@@ -12,29 +12,37 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
     const [knownCards, setKnownCards] = useState([]);
     const [notKnownCards, setNotKnownCards] = useState([]);
 
-    const handleNext = () => {
+    const handleNext = (updatedKnownCount, updatedNotKnownCount, updatedKnownCards, updatedNotKnownCards) => {
         if (currentWordIndex < flashcards.length - 1) {
             setCurrentWordIndex(currentWordIndex + 1);
         } else {
             onFinish({
-                knownCount,
-                notKnownCount,
-                knownCards,
-                notKnownCards,
+                knownCount: updatedKnownCount,
+                notKnownCount: updatedNotKnownCount,
+                knownCards: updatedKnownCards,
+                notKnownCards: updatedNotKnownCards,
             });
         }
     };
 
     const markAsKnown = () => {
-        setKnownCards((prev) => [...prev, flashcards[currentWordIndex].id]);
-        setKnownCount((prev) => prev + 1);
-        handleNext();
+        const updatedKnownCards = [...knownCards, flashcards[currentWordIndex].id];
+        const updatedKnownCount = knownCount + 1;
+
+        setKnownCards(updatedKnownCards);
+        setKnownCount(updatedKnownCount);
+
+        handleNext(updatedKnownCount, notKnownCount, updatedKnownCards, notKnownCards);
     };
 
     const markAsNotKnown = () => {
-        setNotKnownCards((prev) => [...prev, flashcards[currentWordIndex].id]);
-        setNotKnownCount((prev) => prev + 1);
-        handleNext();
+        const updatedNotKnownCards = [...notKnownCards, flashcards[currentWordIndex].id];
+        const updatedNotKnownCount = notKnownCount + 1;
+
+        setNotKnownCards(updatedNotKnownCards);
+        setNotKnownCount(updatedNotKnownCount);
+
+        handleNext(knownCount, updatedNotKnownCount, knownCards, updatedNotKnownCards);
     };
 
     const toggleCard = () => {
@@ -57,13 +65,15 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
             <HeaderNav title="Cancel" onClick={onBack} />
             <div className="game-container">
                 <div className="game-info">
-                    <div className="counter not-known-counter">{notKnownCount}</div>
-                    <div className="game-progress">
-                        {currentWordIndex + 1}/{flashcards.length}
+                    <div className='game-counter-container'>
+                        <div className="counter not-known-counter">{notKnownCount}</div>
+                        <div className="game-progress">
+                            {currentWordIndex + 1}/{flashcards.length}
+                        </div>
+                        <div className="counter known-counter">{knownCount}</div>
                     </div>
-                    <div className="counter known-counter">{knownCount}</div>
+                    <span className="game-topic-title font-regular">{topicTitle}</span>
                 </div>
-                <span className="game-topic-title font-regular">{topicTitle}</span>
                 <div className="flashcard-container">
                     <div
                         className={`flashcard ${showMeaning ? 'flashcard-flipped' : ''}`}
@@ -72,15 +82,15 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
                         <span className={`${showMeaning ? 'flash-word' : ''}`}>{flashcards[currentWordIndex].word}</span>
                         <span className={`${showMeaning ? 'flash-meaning' : ''}`}>{showMeaning && flashcards[currentWordIndex].meaning} </span> 
                     </div>
+                    <span className="flashcard-info font-regular">To flip card, tap on it</span>
                 </div>
-                <span className="flashcard-info font-regular">To flip card, tap on it</span>
                 <div className="action-buttons">
                     <button className="button-controls btn-not-known" onClick={markAsNotKnown}>
                         <img src={OrangeArrowLeft} alt="arrow left" />
-                        <span className="font-regular">Mark as Not Known</span>
+                        <span className="font-regular">Go over</span>
                     </button>
                     <button className="button-controls btn-known" onClick={markAsKnown}>
-                        <span className="font-regular">Mark as Known</span>
+                        <span className="font-regular">I know it</span>
                         <img src={GreenArrowRight} alt="arrow left" />
                     </button>
                 </div>

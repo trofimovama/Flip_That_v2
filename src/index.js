@@ -9,6 +9,5 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider appStore={appStore}>
         <App />
-    </Provider>,
-    document.getElementById('root')
+    </Provider>
 );

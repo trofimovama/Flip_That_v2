@@ -7,6 +7,7 @@ import MicrophoneIcon from '../../assets/microphone.svg';
 
 const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTopic }) => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [slidingIndex, setSlidingIndex] = useState(null);
 
     const handleTopicClick = (topic) => {
         onSelectTopic(topic);
@@ -18,6 +19,10 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
+    };
+
+    const handleSlide = (index) => {
+        setSlidingIndex((prevIndex) => (prevIndex === index ? null : index));
     };
 
     const filteredTopics = topics.filter((topic) =>
@@ -47,7 +52,11 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
             <div className="topics-list-wrapper">
                 <ul className="topics-list">
                     {filteredTopics.map((topic, index) => (
-                        <li key={index} className="topic-item">
+                        <li
+                            key={index}
+                            className={`topic-item ${slidingIndex === index ? 'sliding' : ''}`}
+                            onClick={() => handleSlide(index)}
+                        >
                             <div className="topic-content" onClick={() => handleTopicClick(topic)}>
                                 <span>{topic}</span>
                                 <img src={ArrowRight} alt="arrow right" />
