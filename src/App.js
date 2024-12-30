@@ -6,7 +6,7 @@ function App() {
     const [botStatus, setBotStatus] = useState('Loading...');
 
     useEffect(() => {
-        fetch('/api/status') // backend endpoint !!!
+        fetch('https://flip-that-app-gbour.ondigitalocean.app/api/status')
             .then((response) => response.json())
             .then((data) => setBotStatus(data.status))
             .catch((error) => {

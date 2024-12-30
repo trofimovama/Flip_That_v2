@@ -8,6 +8,8 @@ import MicrophoneIcon from '../../assets/microphone.svg';
 const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTopic }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [slidingIndex, setSlidingIndex] = useState(null);
+    const [touchStartX, setTouchStartX] = useState(0);
+    const [touchEndX, setTouchEndX] = useState(0);
 
     const handleTopicClick = (topic) => {
         onSelectTopic(topic);
@@ -21,8 +23,23 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
         setSearchTerm(e.target.value);
     };
 
-    const handleSlide = (index) => {
-        setSlidingIndex((prevIndex) => (prevIndex === index ? null : index));
+    const handleTouchStart = (index, e) => {
+        setTouchStartX(e.touches[0].clientX);
+        setSlidingIndex(null)
+    };
+
+    const handleTouchMove = (e) => {
+        setTouchEndX(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = (index) => {
+        const swipeDistance = touchStartX - touchEndX;
+
+        if (swipeDistance > 50) {
+            setSlidingIndex(index);
+        } else {
+            setSlidingIndex(null);
+        }
     };
 
     const filteredTopics = topics.filter((topic) =>
@@ -55,7 +72,9 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
                         <li
                             key={index}
                             className={`topic-item ${slidingIndex === index ? 'sliding' : ''}`}
-                            onClick={() => handleSlide(index)}
+                            onTouchStart={(e) => handleTouchStart(index, e)}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={() => handleTouchEnd(index)}
                         >
                             <div className="topic-content" onClick={() => handleTopicClick(topic)}>
                                 <span>{topic}</span>
