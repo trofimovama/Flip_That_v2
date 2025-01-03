@@ -2,10 +2,22 @@ import React, { useState } from 'react';
 import './AddCardScreen.css';
 import HeaderNav from '../HeaderNav/HeaderNav.js';
 import InputField from '../InputField/InputField.js';
+import { trackEvent } from '../../utils/amplitude';
 
 const AddCardScreen = ({ onAddCard, onBack, topicTitle }) => {
     const [formData, setFormData] = useState({ word: '', meaning: '' });
     const [validationErrors, setValidationErrors] = useState({ word: '', meaning: '' });
+
+    const handleBackClick = () => {
+        trackEvent('Back Button Clicked on Add Card', {
+            topicTitle,
+            word: formData.word,
+            meaning: formData.meaning,
+            timestamp: new Date().toISOString(),
+        });
+    
+        onBack();
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,7 +47,7 @@ const AddCardScreen = ({ onAddCard, onBack, topicTitle }) => {
     return (
         <div className="screen fade-in">
             <div>
-                <HeaderNav title={topicTitle || "Cancel"} onClick={onBack} />
+                <HeaderNav title={topicTitle || "Cancel"} onClick={handleBackClick} />
                 <div className="field-group">
                     <span className="font-title initial-title">Add new card</span>
                     <InputField

@@ -1,8 +1,16 @@
 import React from 'react';
 import InputField from '../InputField/InputField';
 import './FirstFlashcardScreen.css';
+import { trackEvent } from '../../utils/amplitude';
 
 const FirstFlashcardScreen = ({ formData, validationErrors, onChange, onSubmit }) => {
+    
+    const handleCreateFlashcardClick = () => {
+        trackEvent('Create Flashcard Clicked');
+
+        onSubmit();
+    };
+
     return (
         <div className='container'>
             <div className="input-screen-container fade-in">
@@ -36,7 +44,7 @@ const FirstFlashcardScreen = ({ formData, validationErrors, onChange, onSubmit }
                 <button
                     type="button"
                     className="btn btn-blue font-regular btn-initial"
-                    onClick={onSubmit}
+                    onClick={handleCreateFlashcardClick}
                 >
                     Create Flashcard
                 </button>

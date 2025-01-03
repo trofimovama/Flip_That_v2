@@ -3,6 +3,7 @@ import './GameScreen.css';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import OrangeArrowLeft from '../../assets/orange_arrow_left.svg';
 import GreenArrowRight from '../../assets/green_arrow_right.svg';
+import { trackEvent } from '../../utils/amplitude';
 
 const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -16,6 +17,12 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
         if (currentWordIndex < flashcards.length - 1) {
             setCurrentWordIndex(currentWordIndex + 1);
         } else {
+            trackEvent('Finish Session Clicked', {
+                topic: topicTitle,
+                knownCount: updatedKnownCount,
+                notKnownCount: updatedNotKnownCount,
+                timestamp: new Date().toISOString(),
+            });
             onFinish({
                 knownCount: updatedKnownCount,
                 notKnownCount: updatedNotKnownCount,
@@ -29,6 +36,14 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
         const updatedKnownCards = [...knownCards, flashcards[currentWordIndex].id];
         const updatedKnownCount = knownCount + 1;
 
+        trackEvent('I Know It Clicked', {
+            topic: topicTitle,
+            word: flashcards[currentWordIndex].word,
+            currentIndex: currentWordIndex + 1,
+            totalCards: flashcards.length,
+            timestamp: new Date().toISOString(),
+        });
+
         setKnownCards(updatedKnownCards);
         setKnownCount(updatedKnownCount);
 
@@ -38,6 +53,14 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
     const markAsNotKnown = () => {
         const updatedNotKnownCards = [...notKnownCards, flashcards[currentWordIndex].id];
         const updatedNotKnownCount = notKnownCount + 1;
+
+        trackEvent('Go Over Clicked', {
+            topic: topicTitle,
+            word: flashcards[currentWordIndex].word,
+            currentIndex: currentWordIndex + 1,
+            totalCards: flashcards.length,
+            timestamp: new Date().toISOString(),
+        });
 
         setNotKnownCards(updatedNotKnownCards);
         setNotKnownCount(updatedNotKnownCount);
@@ -62,7 +85,6 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
 
     return (
         <div className="game-screen fade-in">
-            <HeaderNav title="Cancel" onClick={onBack} />
             <div className="game-container">
                 <div className="game-info">
                     <div className='game-counter-container'>
@@ -94,7 +116,20 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
                         <img src={GreenArrowRight} alt="arrow left" />
                     </button>
                 </div>
-                <span className="game-footer">Finish Session</span>
+                <span
+                    className="game-footer"
+                    onClick={() => {
+                        trackEvent('Finish Session Clicked', {
+                            topic: topicTitle,
+                            knownCount,
+                            notKnownCount,
+                            timestamp: new Date().toISOString(),
+                        });
+                        onBack();
+                    }}
+                >
+                    Finish Session
+                </span>
             </div>
         </div>
     );

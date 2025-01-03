@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TopicsScreen.css';
 import AddIcon from '../../assets/add_plus.svg';
 import ArrowRight from '../../assets/arrow_right.svg';
 import GlassIcon from '../../assets/glass.svg';
 import MicrophoneIcon from '../../assets/microphone.svg';
+import { trackEvent } from '../../utils/amplitude'; // Import Amplitude tracking
 
 const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTopic }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -11,11 +12,20 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
     const [touchStartX, setTouchStartX] = useState(0);
     const [touchEndX, setTouchEndX] = useState(0);
 
+    useEffect(() => {
+        trackEvent('Show Topics Page opened');
+    }, []);
+
     const handleTopicClick = (topic) => {
         onSelectTopic(topic);
     };
 
     const handleDeleteClick = (topic) => {
+        trackEvent('Topic Deleted', {
+            topicName: topic,
+            timestamp: new Date().toISOString(),
+        });
+
         onDeleteTopic(topic);
     };
 
@@ -25,7 +35,7 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
 
     const handleTouchStart = (index, e) => {
         setTouchStartX(e.touches[0].clientX);
-        setSlidingIndex(null)
+        setSlidingIndex(null);
     };
 
     const handleTouchMove = (e) => {

@@ -31,6 +31,80 @@
   border-bottom: 1px solid var(--grey-primary);
   padding: 12px 0;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.flashcard-item:hover .delete-btn {
+  visibility: visible;
+  opacity: 1;
+}
+
+.flashcard-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 10px 15px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  background-color: white;
+}
+
+.delete-btn {
+  position: absolute;
+  right: -100px;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  background: var(--red-primary);
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: right 0.3s ease;
+  z-index: 10;
+}
+
+.delete-btn.visible,
+.flashcard-item.sliding .delete-btn {
+  right: 0;
+}
+
+.flashcard-item {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--grey-primary);
+  padding: 12px 0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.flashcard-item:hover .delete-btn {
+  visibility: visible;
+  opacity: 1;
+}
+
+.flashcard-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 10px 15px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  background-color: white;
 }
 
 .flashcard-meaning {
@@ -43,4 +117,18 @@
   padding: 0;
   margin: 0;
   text-align: start;
+}
+
+.add-first-word-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30%;
+}
+
+.add-first-word-hint {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--grey-primary);
+  padding-bottom: 20px;
 }

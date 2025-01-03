@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './EditCardScreen.css';
 import HeaderNav from '../HeaderNav/HeaderNav';
 import InputField from '../InputField/InputField';
+import { trackEvent } from '../../utils/amplitude';
 
 const EditCardScreen = ({ card, onSaveCard, onBack }) => {
     const [formData, setFormData] = useState({ word: card.word, meaning: card.meaning });
     const [validationErrors, setValidationErrors] = useState({ word: '', meaning: '' });
+
+    useEffect(() => {
+        trackEvent('Edit Word Page opened');
+    }, []);
+
+    const handleBackClick = () => {
+        trackEvent('Back Button Clicked on Edit Card', {
+            word: formData.word,
+            meaning: formData.meaning,
+            timestamp: new Date().toISOString(),
+        });
+    
+        onBack();
+    };    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,7 +50,7 @@ const EditCardScreen = ({ card, onSaveCard, onBack }) => {
     return (
         <div className="screen fade-in">
             <div>
-                <HeaderNav title="Cancel" onClick={onBack} />
+                <HeaderNav title="Cancel" onClick={handleBackClick} />
                 <span className="font-title text-blue add-topic-title">Edit Card</span>
                 <div className="field-group">
                     <InputField

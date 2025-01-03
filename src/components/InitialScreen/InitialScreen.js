@@ -111,6 +111,21 @@ const InitialScreen = () => {
         );
     };
 
+    const handleDeleteWord = (wordIdToDelete) => {
+        setFlashcards((prevFlashcards) =>
+            prevFlashcards.map((topic) => {
+                if (topic.topic === currentTopic) {
+                    return {
+                        ...topic,
+                        cards: topic.cards.filter((card) => card.id !== wordIdToDelete),
+                    };
+                }
+
+                return topic;
+            })
+        );
+    };    
+
     const handleGameFinish = (data) => {
         setProgressData({
             knownCount: data.knownCount,
@@ -236,6 +251,7 @@ const InitialScreen = () => {
                     onBack={handleBackToTopics}
                     onUpdateTopic={handleUpdateTopic}
                     onFlip={handleGoToGameScreen}
+                    onDeleteCard={handleDeleteWord}
                 />
             )}
             {currentScreen === "addWord" && (
