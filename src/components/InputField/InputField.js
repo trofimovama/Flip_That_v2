@@ -3,7 +3,7 @@ import './InputField.css';
 import Tick from '../../assets/tick.svg';
 import ThinkSmile from '../../assets/think_emoji.png';
 
-const InputField = ({ label, value, placeholder, onChange, type = 'text', name, enterKeyHint = 'done', errorMessage }) => {
+const InputField = ({ label, value, placeholder, onChange, type = 'text', name, errorMessage }) => {
     const [isValid, setIsValid] = useState(false);
 
     useEffect(() => {
@@ -22,7 +22,6 @@ const InputField = ({ label, value, placeholder, onChange, type = 'text', name, 
                     placeholder={placeholder}
                     onChange={onChange}
                     className={`input-field font-regular ${isValid ? 'valid' : ''} ${errorMessage ? 'error' : ''}`}
-                    enterKeyHint={enterKeyHint}
                 />
                 {isValid && !errorMessage && <img className="valid-icon" src={Tick} alt="tick" />}
             </div>
