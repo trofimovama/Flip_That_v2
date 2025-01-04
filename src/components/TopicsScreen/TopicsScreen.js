@@ -59,7 +59,7 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
     return (
         <div className="topics-screen">
             <div className="topics-container">
-                <span className="font-title">Topics123</span>
+                <span className="font-title">Topics</span>
                 <img src={AddIcon} alt="add icon" onClick={onGoToAddTopicScreen} />
             </div>
             <span className="text-secondary topic-subtitle">

@@ -13,6 +13,11 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
     const [knownCards, setKnownCards] = useState([]);
     const [notKnownCards, setNotKnownCards] = useState([]);
 
+    const [touchStartX, setTouchStartX] = useState(0);
+    const [touchEndX, setTouchEndX] = useState(0);
+
+    const swipeThreshold = 50;
+
     const handleNext = (updatedKnownCount, updatedNotKnownCount, updatedKnownCards, updatedNotKnownCards) => {
         if (currentWordIndex < flashcards.length - 1) {
             setCurrentWordIndex(currentWordIndex + 1);
@@ -72,6 +77,26 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
         setShowMeaning((prev) => !prev);
     };
 
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX);
+    };
+
+    const handleTouchMove = (e) => {
+        setTouchEndX(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        const distance = touchStartX - touchEndX;
+
+        if (Math.abs(distance) > swipeThreshold) {
+            if (distance > 0) {
+                markAsNotKnown();
+            } else {
+                markAsKnown();
+            }
+        }
+    };
+
     if (!flashcards.length) {
         return (
             <div className="game-screen fade-in">
@@ -84,7 +109,12 @@ const GameScreen = ({ onBack, topicTitle, flashcards = [], onFinish }) => {
     }
 
     return (
-        <div className="game-screen fade-in">
+        <div 
+            className="game-screen fade-in"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+        >
             <div className="game-container">
                 <div className="game-info">
                     <div className='game-counter-container'>
