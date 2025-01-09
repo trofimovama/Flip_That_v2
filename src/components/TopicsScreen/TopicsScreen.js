@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './TopicsScreen.css';
 import AddIcon from '../../assets/add_plus.svg';
-import ArrowRight from '../../assets/arrow_right.svg';
 import GlassIcon from '../../assets/glass.svg';
-import MicrophoneIcon from '../../assets/microphone.svg';
-import { trackEvent } from '../../utils/amplitude'; // Import Amplitude tracking
+import { trackEvent } from '../../utils/amplitude';
 
 const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTopic }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -74,7 +72,6 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
                     onChange={handleSearchChange}
                     className="search-input"
                 />
-                <img src={MicrophoneIcon} alt="microphone icon" className="microphone-icon" />
             </div>
             <div className="topics-list-wrapper">
                 <ul className="topics-list">
@@ -88,7 +85,6 @@ const TopicsScreen = ({ topics, onSelectTopic, onGoToAddTopicScreen, onDeleteTop
                         >
                             <div className="topic-content" onClick={() => handleTopicClick(topic)}>
                                 <span>{topic}</span>
-                                <img src={ArrowRight} alt="arrow right" />
                             </div>
                             <button
                                 className="delete-btn text-white"
