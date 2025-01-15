@@ -47,5 +47,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.1"
+  },
+  "overrides": {
+    "typescript": "4.9.5"
   }
 }
